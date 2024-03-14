@@ -8,19 +8,24 @@
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    /* align-items: center; */
+    height: 100%;
   }
   
   .box {
+    margin-top: 40px;
     /* background-color: #333; */
+    width: 70vw;
+    min-width: max-content;
+    height: 65vh;
     background-color: grey;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     align-items: center;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    gap:40px;
   }
   
   form {
