@@ -1,0 +1,117 @@
+/* ProductList.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    width: 100%;
+    /* background-color: #222;
+    color: #fff; */
+  }
+/*   
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .add-product-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #2196F3;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-product-button:hover {
+    background-color: #0d47a1;
+  }
+  
+  .product-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .product-form label {
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  
+  .product-form input {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #424242;
+    color: #ffffff;
+  }
+  
+  .product-form button {
+    padding: 10px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .product-form button:hover {
+    background-color: #0d47a1;
+  }
+  
+  /* .product-table {
+    width: 80vw;
+    margin: 0 auto;
+    border-collapse: collapse;
+  } */
+  
+
+  .inventry-table{
+    width: 65vw;
+    margin: auto;
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+
+  .inventry-form{
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    position: relative;
+    left: 15%;
+  }
+
+  .inventry-form label{
+    display: flex;
+    gap: 10px;
+  }
+
+  .inventry-form label h4{
+    font-weight: bolder;
+    min-width: max-content;
+  }
+
+  .inventry-form label input, .inventry-form label select{
+    height: max-content;
+    margin: auto;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: 2px 2px grey;
+  }
+
+  .inventry-form label select{
+    font-size: 12pt;
+    padding: 10px;
+  }
+
+  .inventry-form button{
+    font-size: 16pt;
+    min-width: max-content;
+    height: max-content;
+    margin: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }

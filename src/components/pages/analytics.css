@@ -1,0 +1,11 @@
+.chart{
+    width: 80vw;
+    height: 75vh;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+.chart h2{
+    margin-bottom: none;
+    margin-top: 50px;
+}
