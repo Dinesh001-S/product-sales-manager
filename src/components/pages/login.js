@@ -1,15 +1,14 @@
 // Import necessary modules
 import React, { useState } from 'react';
 import axios from 'axios';
+import './login.css'
 
 // CSS styles
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
+    // justifyContent: 'center',
   },
   input: {
     marginBottom: '10px',
@@ -68,8 +67,8 @@ const Login = () => {
 
   // JSX for login and signup forms
   return (
-    <div style={styles.container}>
-      <div>
+    <div style={styles.container} className='login-card'>
+      <div className='login'>
         <h2>Login</h2>
         <input
           style={styles.input}
@@ -86,8 +85,9 @@ const Login = () => {
           onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
         />
         <button style={styles.button} onClick={handleLogin}>Login</button>
+        {/* <button style={styles.button} onClick={handleSignup}>Signup</button> */}
       </div>
-      <div>
+      <div className='signup'>
         <h2>Signup</h2>
         <input
           style={styles.input}

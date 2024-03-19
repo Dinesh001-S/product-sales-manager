@@ -1,0 +1,25 @@
+body{
+    width: 100vw;
+}
+.login-card{
+    position: absolute;
+    display: flex;
+    /* flex-direction: row; */
+    justify-content: space-between;
+    /* align-items: center; */
+    height: 65vh;
+    max-width: 440px;
+    margin: auto;
+    border: 1px solid black;
+    gap: 25px;
+    /* overflow-x: hidden; */
+    box-shadow: -4px 4px lightgrey;
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.login{
+    margin: 15%;
+}

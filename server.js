@@ -26,7 +26,6 @@ const billSchema = new mongoose.Schema({
 
 const Bill = mongoose.model('Bill', billSchema);
 
-app.use(cors());
 app.use(bodyParser.json());
 
 mongoose.connect('mongodb+srv://dinesh:pJPP7wn3X5SVMjCX@bill-data.2rwmc5n.mongodb.net/?retryWrites=true&w=majority&appName=bill-data', {
@@ -41,14 +40,14 @@ mongoose.connect('mongodb+srv://dinesh:pJPP7wn3X5SVMjCX@bill-data.2rwmc5n.mongod
 app.post('/bill', async (req, res) => {
   try {
     const { purchases, total } = req.body;
-
+    
     const newBill = new Bill({
       purchases,
       total,
     });
-
+    
     await newBill.save();
-
+    
     res.status(200).json({ message: 'Data stored successfully' });
   } catch (error) {
     console.error(error);
@@ -99,6 +98,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 // Set up multer for handling file uploads
