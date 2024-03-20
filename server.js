@@ -116,22 +116,40 @@ const upload = multer({ storage });
 // Routes
 app.post('/signup', upload.single('image'), async (req, res) => {
   try {
-    const { username, password, role } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
-      username,
+    // Validate required fields
+    if (!req.body.username || !req.body.password || !req.body.role) {
+      return res.status(400).json({ error: 'Missing required fields: username, password, and role' });
+    }
+
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    // Create a new user with sanitized data
+    const newUser = new User({
+      username: req.body.username.trim(), // Trim leading/trailing whitespaces
       password: hashedPassword,
-      role,
-      image: req.file.filename,
+      role: req.body.role.trim(),
+      image: req.file ? req.file.filename : null, // Set image only if uploaded
     });
-    await user.save();
+
+    // Save the user and handle potential errors
+    const savedUser = await newUser.save();
+    if (!savedUser) {
+      return res.status(500).json({ error: 'Failed to create user' });
+    }
+
+    // Respond with success message or created user data (optional)
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    // Handle specific errors (e.g., mongoose validation errors) for better feedback
+    if (error.name === 'MongoError' && error.code === 11000) {
+      res.status(400).json({ error: 'Username already exists' });
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
 });
-
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -145,10 +163,11 @@ app.post('/login', async (req, res) => {
     }
     // Here you can generate JWT token for authentication
     // For simplicity, returning user data without password
+    app.use('/uploads', express.static('uploads'));
     res.status(200).json({
       username: user.username,
       role: user.role,
-      image: user.image,
+      image: user.image ? `../uploads/${user.image}` : null, // Construct image URL
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -157,7 +176,6 @@ app.post('/login', async (req, res) => {
 });
 
 // Serve static files from uploads folder
-app.use('/uploads', express.static('uploads'));
 
 app.get('/', (req, res) => {
     res.send('Server is running. Use the appropriate API endpoints.');
@@ -171,71 +189,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const bodyParser = require('body-parser');
-// const axios = require('axios');
-// const cors = require('cors');
-
-// const app = express();
-// const PORT = process.env.PORT || 3002;
-
-// app.use(cors());
-
-// const productSchema = new mongoose.Schema({
-//   productName: String,
-//   price: Number,
-//   quantity: Number,
-//   date: Date,
-// });
-
-// const Product = mongoose.model('Product', productSchema);
-
-// // Middleware
-// app.use(bodyParser.json());
-
-// // MongoDB connection
-// mongoose.connect('mongodb+srv://dinesh:pJPP7wn3X5SVMjCX@bill-data.2rwmc5n.mongodb.net/?retryWrites=true&w=majority&appName=bill-data', { 
-//   useNewUrlParser: true, 
-//   useUnifiedTopology: true 
-// }).then(() => {
-//   console.info("Connected to DB");
-// }).catch((e) => {
-//   console.error("Error connecting to DB:", e);
-// });
-
-// // Define an endpoint to handle the "Bill" button click
-// app.post('/bill', async (req, res) => {
-//   try {
-//     const { productList } = req.body;
-
-//     // Assuming you want to store each product separately in MongoDB
-//     const savePromises = productList.map(async (product) => {
-//       const { productName, price, quantity, date } = product;
-//       const newProduct = new Product({ productName, price, quantity, date });
-//       await newProduct.save();
-//     });
-
-//     // Wait for all save operations to complete
-//     await Promise.all(savePromises);
-//     res.status(200).json({ message: 'Data stored successfully' });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// });
-
-// // Define a default route for the root URL
-// app.get('/', (req, res) => {
-//   res.send('Server is running. Use the appropriate API endpoints.');
-// });
-
-// // Handle undefined routes with a wildcard route
-// app.get('*', (req, res) => {
-//   res.status(404).send('404 - Not Found');
-// });
-
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-// });
