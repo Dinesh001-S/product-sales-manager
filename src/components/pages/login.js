@@ -1,9 +1,7 @@
-// Import necessary modules
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './login.css';
 
-// CSS styles
 const styles = {
   container: {
     display: 'flex',
@@ -23,31 +21,46 @@ const styles = {
     backgroundColor: '#007bff',
     color: '#fff',
     cursor: 'pointer',
+    marginRight: '10px',
   },
   image: {
     maxWidth: '100px', // Adjust as needed
   },
 };
 
-// Main Component
 const Login = () => {
-  // State variables for login and signup forms
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [signupData, setSignupData] = useState({ username: '', password: '', role: '', image: null });
-  const [loggedInUser, setLoggedInUser] = useState(null); // Track logged in user
+  const [loggedInUser, setLoggedInUser] = useState(null);
 
-  // Function to handle login form submission
+  useEffect(() => {
+    const loggedInUserData = localStorage.getItem('loggedInUser');
+    if (loggedInUserData) {
+      setLoggedInUser(JSON.parse(loggedInUserData));
+    }
+
+    // Clear localStorage on page unload
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  const handleBeforeUnload = () => {
+    localStorage.removeItem('loggedInUser');
+  };
+
   const handleLogin = async () => {
     try {
-      // Make POST request to login endpoint
       const response = await axios.post('http://localhost:3002/login', loginData);
-      setLoggedInUser(response.data); // Set logged in user data
+      setLoggedInUser(response.data);
+      localStorage.setItem('loggedInUser', JSON.stringify(response.data));
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
 
-  // Function to handle signup form submission
   const handleSignup = async () => {
     try {
       const formData = new FormData();
@@ -56,19 +69,23 @@ const Login = () => {
       formData.append('role', signupData.role);
       formData.append('image', signupData.image);
 
-      // Make POST request to signup endpoint
       const response = await axios.post('http://localhost:3002/signup', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      setLoggedInUser(response.data); // Set signed up user as logged in
+      setLoggedInUser(response.data);
+      localStorage.setItem('loggedInUser', JSON.stringify(response.data));
     } catch (error) {
       console.error('Signup failed:', error);
     }
   };
 
-  // JSX for login and signup forms
+  const handleLogout = () => {
+    localStorage.removeItem('loggedInUser');
+    setLoggedInUser(null);
+  };
+
   return (
     <div style={styles.container} className={`login-card ${loggedInUser ? 'hidden' : ''}`}>
       {loggedInUser ? (
@@ -76,9 +93,7 @@ const Login = () => {
           <h2>Welcome, {loggedInUser.username}!</h2>
           <p>Your role: {loggedInUser.role}</p>
           {loggedInUser.image && <img src={loggedInUser.image} alt="User" style={styles.image} />}
-          <img src="./uploads/1710948000467.jpg" alt="User" style={styles.image} />
-          {console.log(loggedInUser.image)}
-          {/* Add more user details here */}
+          <button style={styles.button} onClick={handleLogout}>Logout</button>
         </div>
       ) : (
         <>
