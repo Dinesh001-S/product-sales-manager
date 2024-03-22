@@ -1,6 +1,6 @@
 body{
-    width: 100vw;
-    overflow-x: hidden;
+    /* width: 100%; */
+    overflow: hidden;
 }
 .login-card{
     position: absolute;
@@ -32,12 +32,75 @@ body{
 
 .user-details-card{
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    top: 20%;
+    min-width: 65vw;
+    height: 75vh;
+    top: 5%;
     display: flex;
+    /* justify-content: space-around; */
+    border:1px solid lightgrey;
+    border-radius: 15px;
+    box-shadow: -2.5px 2.5px lightgrey;
+    padding: 10px;
+    /* margin: auto; */
+}
+
+.user-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16pt;
+    margin: auto;
+    border: 0.1px solid grey;
+    border-radius: 10px;
+    box-shadow: 1.5px 1.5px lightblue;
+    padding: 10px;
+}
+
+.user-details h2{
+    margin: 10px;
+    display: flex;
+    padding: 10px;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.user-details h2 p{
+    margin: 0;
+    color: #b1b0b0;
 }
 
 .logout{
+    font-size: 14pt;
     height: max-content;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.new-employee , .employees{
+    width: 166px;
+    height: max-content;
+    font-size: 14pt;
+}
+
+.user-img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border: 1px solid gray;
+    border-radius: 50%;
+}
+
+.user-btn{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-btn .btn{
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -93,10 +93,17 @@ const Login = () => {
           <div className='user-img'>
             {loggedInUser.image && <img src={loggedInUser.image} alt="User" style={styles.image} />}
           </div>
+          <div className='user-btn'>
           <div className='user-details'>
-            <h2>Name : {loggedInUser.username}</h2>
-            <h2>Role : {loggedInUser.role}</h2>
+            <h2>NAME : <p>{loggedInUser.username}</p></h2>
+            <h2>ROLE : <p>{loggedInUser.role}</p></h2>
           </div>
+          {(loggedInUser.role === 'Manager' || loggedInUser.role === 'Owner') && (
+            <div className='btn'>
+              <button className='new-employee' style={styles.button}>New Employee</button>
+              <button className='employees' style={styles.button}>Employees</button>
+            </div>
+          )}</div>
           <button className='logout' style={styles.button} onClick={handleLogout}>Logout</button>
         </div>
       ) : (
