@@ -89,11 +89,15 @@ const Login = () => {
   return (
     <div style={styles.container} className={`login-card ${loggedInUser ? 'hidden' : ''}`}>
       {loggedInUser ? (
-        <div>
-          <h2>Welcome, {loggedInUser.username}!</h2>
-          <p>Your role: {loggedInUser.role}</p>
-          {loggedInUser.image && <img src={loggedInUser.image} alt="User" style={styles.image} />}
-          <button style={styles.button} onClick={handleLogout}>Logout</button>
+        <div className="user-details-card">
+          <div className='user-img'>
+            {loggedInUser.image && <img src={loggedInUser.image} alt="User" style={styles.image} />}
+          </div>
+          <div className='user-details'>
+            <h2>Name : {loggedInUser.username}</h2>
+            <h2>Role : {loggedInUser.role}</h2>
+          </div>
+          <button className='logout' style={styles.button} onClick={handleLogout}>Logout</button>
         </div>
       ) : (
         <>
