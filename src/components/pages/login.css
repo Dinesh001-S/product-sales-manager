@@ -1,5 +1,6 @@
 body{
     width: 100vw;
+    overflow-x: hidden;
 }
 .login-card{
     position: absolute;
@@ -20,6 +21,23 @@ body{
     transform: translate(-50%,-50%);
 }
 
+.hidden{
+    border: none;
+    box-shadow: none;
+}
+
 .login{
     margin: 15%;
+}
+
+.user-details-card{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    top: 20%;
+    display: flex;
+}
+
+.logout{
+    height: max-content;
 }
