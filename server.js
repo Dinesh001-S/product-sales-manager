@@ -26,6 +26,7 @@ const billSchema = new mongoose.Schema({
 
 const Bill = mongoose.model('Bill', billSchema);
 
+app.use(cors());
 app.use(bodyParser.json());
 
 mongoose.connect('mongodb+srv://dinesh:pJPP7wn3X5SVMjCX@bill-data.2rwmc5n.mongodb.net/?retryWrites=true&w=majority&appName=bill-data', {
@@ -98,7 +99,6 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Middleware
-app.use(cors());
 app.use(bodyParser.json());
 
 // Set up multer for handling file uploads
