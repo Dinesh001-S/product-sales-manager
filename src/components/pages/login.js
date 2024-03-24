@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './login.css';
+// import user from './images/download.png';
 
 const styles = {
   container: {
@@ -18,7 +20,7 @@ const styles = {
     padding: '10px 20px',
     borderRadius: '4px',
     border: 'none',
-    backgroundColor: '#007bff',
+    backgroundColor: 'rgb(0 66 137)',
     color: '#fff',
     cursor: 'pointer',
     marginRight: '10px',
@@ -30,7 +32,6 @@ const styles = {
 
 const Login = () => {
   const [loginData, setLoginData] = useState({ username: '', password: '' });
-  const [signupData, setSignupData] = useState({ username: '', password: '', role: '', image: null });
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   useEffect(() => {
@@ -39,7 +40,6 @@ const Login = () => {
       setLoggedInUser(JSON.parse(loggedInUserData));
     }
 
-    // Clear localStorage on page unload
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
@@ -61,26 +61,6 @@ const Login = () => {
     }
   };
 
-  const handleSignup = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('username', signupData.username);
-      formData.append('password', signupData.password);
-      formData.append('role', signupData.role);
-      formData.append('image', signupData.image);
-
-      const response = await axios.post('http://localhost:3002/signup', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setLoggedInUser(response.data);
-      localStorage.setItem('loggedInUser', JSON.stringify(response.data));
-    } catch (error) {
-      console.error('Signup failed:', error);
-    }
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     setLoggedInUser(null);
@@ -91,74 +71,47 @@ const Login = () => {
       {loggedInUser ? (
         <div className="user-details-card">
           <div className='user-img'>
-            {loggedInUser.image && <img src={loggedInUser.image} alt="User" style={styles.image} />}
+            {loggedInUser.image && <img src={`data:${loggedInUser.image};base64,${loggedInUser.data}`} alt={loggedInUser.username} style={styles.image} />}
+            {console.log(loggedInUser.image)}
+          </div>
+          <div className='user-details'>
+            <h2>Name: <p>{loggedInUser.username}</p></h2>
+            <h2>Role: <p>{loggedInUser.role}</p></h2>
+            <h2>Gender: <p>{loggedInUser.gender}</p></h2>
+            <h2>Age: <p>{loggedInUser.age}</p></h2>
+            <h2>Shift: <p>{loggedInUser.shift}</p></h2>
           </div>
           <div className='user-btn'>
-          <div className='user-details'>
-            <h2>NAME : <p>{loggedInUser.username}</p></h2>
-            <h2>ROLE : <p>{loggedInUser.role}</p></h2>
+            {(loggedInUser.role === 'Manager' || loggedInUser.role === 'Owner') && (
+              <div className='btn'>
+                <Link to='/signup' className='title'>
+                  <button className='new-employee' style={styles.button}>New Employee</button>
+                </Link>
+                <button className='employees' style={styles.button}>Employees</button>
+              </div>
+            )}
           </div>
-          {(loggedInUser.role === 'Manager' || loggedInUser.role === 'Owner') && (
-            <div className='btn'>
-              <button className='new-employee' style={styles.button}>New Employee</button>
-              <button className='employees' style={styles.button}>Employees</button>
-            </div>
-          )}</div>
           <button className='logout' style={styles.button} onClick={handleLogout}>Logout</button>
         </div>
       ) : (
-        <>
-          <div className='login'>
-            <h2>Login</h2>
-            <input
-              style={styles.input}
-              type="text"
-              placeholder="Username"
-              value={loginData.username}
-              onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
-            />
-            <input
-              style={styles.input}
-              type="password"
-              placeholder="Password"
-              value={loginData.password}
-              onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-            />
-            <button style={styles.button} onClick={handleLogin}>Login</button>
-          </div>
-          <div className='signup'>
-            <h2>Signup</h2>
-            <input
-              style={styles.input}
-              type="text"
-              placeholder="Username"
-              value={signupData.username}
-              onChange={(e) => setSignupData({ ...signupData, username: e.target.value })}
-            />
-            <input
-              style={styles.input}
-              type="password"
-              placeholder="Password"
-              value={signupData.password}
-              onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-            />
-            <select placeholder="Role" style={styles.input} value={signupData.role} onChange={(e) => setSignupData({ ...signupData, role: e.target.value })}>
-              <option></option>
-              <option value="Cashier">Cashier</option>
-              <option value="Product Manager">Product Manager</option>
-              <option value="Manager">Manager</option>
-              <option value="Owner">Owner</option>
-            </select>
-            <input
-              style={styles.input}
-              type="file"
-              placeholder="Image"
-              accept="image/*"
-              onChange={(e) => setSignupData({ ...signupData, image: e.target.files[0] })}
-            />
-            <button style={styles.button} onClick={handleSignup}>Signup</button>
-          </div>
-        </>
+        <div className='login'>
+          <h2>Login</h2>
+          <input
+            style={styles.input}
+            type="text"
+            placeholder="Username"
+            value={loginData.username}
+            onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
+          />
+          <input
+            style={styles.input}
+            type="password"
+            placeholder="Password"
+            value={loginData.password}
+            onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+          />
+          <button style={styles.button} onClick={handleLogin}>Login</button>
+        </div>
       )}
     </div>
   );

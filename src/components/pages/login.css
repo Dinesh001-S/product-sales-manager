@@ -1,5 +1,6 @@
 body{
     /* width: 100%; */
+    /* margin: 0; */
     overflow: hidden;
 }
 .login-card{
@@ -30,26 +31,28 @@ body{
     margin: 15%;
 }
 
-.user-details-card{
-    position: relative;
-    min-width: 65vw;
+.user-details-card {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* This centers the element horizontally and vertically */
+    width: 75vw;
+    min-width: 1050px;
     height: 75vh;
-    top: 5%;
     display: flex;
-    /* justify-content: space-around; */
-    border:1px solid lightgrey;
+    border: 1px solid lightgrey;
     border-radius: 15px;
     box-shadow: -2.5px 2.5px lightgrey;
     padding: 10px;
-    /* margin: auto; */
-}
+  }
 
 .user-details{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     font-size: 16pt;
     margin: auto;
+    margin-left: 10%;
     border: 0.1px solid grey;
     border-radius: 10px;
     box-shadow: 1.5px 1.5px lightblue;
@@ -81,21 +84,28 @@ body{
     width: 166px;
     height: max-content;
     font-size: 14pt;
+    background-color: rgb(0 66 137);
 }
 
 .user-img{
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
+    min-width: 200px;
     height: 200px;
     border: 1px solid gray;
     border-radius: 50%;
+    top: 15px;
+    left: 15px;
 }
 
 .user-btn{
     display: flex;
     flex-direction: column;
+    position: absolute;
+    right: 10px;
+    top: 15px;
 }
 
 .user-btn .btn{
@@ -103,4 +113,9 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.login h2{
+    margin-bottom: 30px;
+    font-size: 22pt;
 }

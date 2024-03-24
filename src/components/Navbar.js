@@ -14,7 +14,7 @@ const Navbar = () => {
             </div>
         <ul className={menuOpen ? "open" : ""}>
             <li><NavLink to='/bill'>Bill</NavLink></li>
-            <li><NavLink to= '/Inventry'>Inventry</NavLink></li>
+            <li><NavLink to= '/inventory'>Inventory</NavLink></li>
             <li><NavLink to='/analytics'>Analytics</NavLink></li>
         </ul>
     </nav>

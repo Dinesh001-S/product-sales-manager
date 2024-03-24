@@ -5,6 +5,7 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -88,20 +89,17 @@ app.post('/products', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true },
-  image: { type: String },
+  age: { type: String },
+  gender: { type: String },
+  shift: { type: String },
+  image: { data: Buffer, contentType: String }, // Modified to store image in the database
 });
 
 const User = mongoose.model('User', userSchema);
-
-// Middleware
-app.use(bodyParser.json());
-
-// Set up multer for handling file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -113,36 +111,37 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Routes
+// Middleware and routes remain the same
+
 app.post('/signup', upload.single('image'), async (req, res) => {
   try {
-    // Validate required fields
     if (!req.body.username || !req.body.password || !req.body.role) {
       return res.status(400).json({ error: 'Missing required fields: username, password, and role' });
     }
 
-    // Hash password before saving
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    // Create a new user with sanitized data
     const newUser = new User({
-      username: req.body.username.trim(), // Trim leading/trailing whitespaces
+      username: req.body.username.trim(),
       password: hashedPassword,
       role: req.body.role.trim(),
-      image: req.file ? req.file.filename : null, // Set image only if uploaded
+      age: req.body.age,
+      gender: req.body.gender,
+      shift: req.body.shift,
+      image: {
+        data: fs.readFileSync(req.file.path),
+        contentType: 'image/png', // Adjust content type based on file type
+      }
     });
 
-    // Save the user and handle potential errors
     const savedUser = await newUser.save();
     if (!savedUser) {
       return res.status(500).json({ error: 'Failed to create user' });
     }
 
-    // Respond with success message or created user data (optional)
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
     console.error('Signup error:', error);
-    // Handle specific errors (e.g., mongoose validation errors) for better feedback
     if (error.name === 'MongoError' && error.code === 11000) {
       res.status(400).json({ error: 'Username already exists' });
     } else {
@@ -167,7 +166,10 @@ app.post('/login', async (req, res) => {
     res.status(200).json({
       username: user.username,
       role: user.role,
-      image: user.image ? `../uploads/${user.image}` : null, // Construct image URL
+      image: user.image ? `../uploads/${user.image}` : null,
+      gender: user.gender, 
+      age: user.age,
+      shift:user.shift,
     });
   } catch (error) {
     console.error('Login error:', error);
