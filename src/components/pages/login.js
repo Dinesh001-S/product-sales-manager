@@ -87,7 +87,9 @@ const Login = () => {
                 <Link to='/signup' className='title'>
                   <button className='new-employee' style={styles.button}>New Employee</button>
                 </Link>
-                <button className='employees' style={styles.button}>Employees</button>
+                <Link to='/employees' className='title'>
+                  <button className='employees' style={styles.button}>Employees</button>
+                </Link>
               </div>
             )}
           </div>

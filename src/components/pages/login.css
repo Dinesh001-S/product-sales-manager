@@ -1,7 +1,7 @@
 body{
     /* width: 100%; */
     /* margin: 0; */
-    overflow: hidden;
+    overflow-x: hidden;
 }
 .login-card{
     position: absolute;

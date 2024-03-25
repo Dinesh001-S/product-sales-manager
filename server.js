@@ -95,6 +95,7 @@ const userSchema = new mongoose.Schema({
   role: { type: String, required: true },
   age: { type: String },
   gender: { type: String },
+  date: { type: Date, default: Date.now },
   shift: { type: String },
   image: { data: Buffer, contentType: String }, // Modified to store image in the database
 });
@@ -127,6 +128,7 @@ app.post('/signup', upload.single('image'), async (req, res) => {
       role: req.body.role.trim(),
       age: req.body.age,
       gender: req.body.gender,
+      date: req.body.date, // Save the date from the request body
       shift: req.body.shift,
       image: {
         data: fs.readFileSync(req.file.path),
@@ -169,10 +171,35 @@ app.post('/login', async (req, res) => {
       image: user.image ? `../uploads/${user.image}` : null,
       gender: user.gender, 
       age: user.age,
+      date: user.date,
       shift:user.shift,
     });
   } catch (error) {
     console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json({ users });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

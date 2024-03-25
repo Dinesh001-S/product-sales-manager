@@ -9,20 +9,36 @@ const Signup = () => {
     password: '', 
     role: '', 
     image: null,
-    age: '', // New field for age
-    gender: '', // New field for gender
-    shift: '', // New field for shift
+    age: '',
+    gender: '',
+    shift: '',
+    date: new Date().toISOString().substr(0, 10) // Default value for date input
   });
   const navigate = useNavigate();
 
   const styles = {
-    // Styles remain the same
+    input: {
+      marginBottom: '10px',
+      padding: '8px',
+      borderRadius: '4px',
+      border: '1px solid #ccc',
+      width: '300px',
+    },
+    button: {
+      padding: '10px 20px',
+      borderRadius: '4px',
+      border: 'none',
+      backgroundColor: 'rgb(0 66 137)',
+      color: '#fff',
+      cursor: 'pointer',
+      marginRight: '10px',
+    },
   };
 
   const handleSignup = async () => {
     try {
       // Check if any required field is empty
-      if (!signupData.username || !signupData.password || !signupData.role || !signupData.age || !signupData.gender || !signupData.shift || !signupData.image) {
+      if (!signupData.username || !signupData.password || !signupData.role || !signupData.age || !signupData.gender || !signupData.shift || !signupData.image || !signupData.date) {
         alert("Please fill in all the fields");
         return;
       }
@@ -32,9 +48,10 @@ const Signup = () => {
       formData.append('password', signupData.password);
       formData.append('role', signupData.role);
       formData.append('image', signupData.image);
-      formData.append('age', signupData.age); // Append age
-      formData.append('gender', signupData.gender); // Append gender
-      formData.append('shift', signupData.shift); // Append shift
+      formData.append('age', signupData.age);
+      formData.append('gender', signupData.gender);
+      formData.append('shift', signupData.shift);
+      formData.append('date', signupData.date); // Append date
 
       // Send the formData to your backend server
       await axios.post('http://localhost:3002/signup', formData, {
@@ -69,7 +86,6 @@ const Signup = () => {
           onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
         />
         <select
-          placeholder="Role"
           style={styles.input}
           value={signupData.role}
           onChange={(e) => setSignupData({ ...signupData, role: e.target.value })}
@@ -105,6 +121,12 @@ const Signup = () => {
           <option value="day">Day</option>
           <option value="night">Night</option>
         </select>
+        <input
+          style={styles.input}
+          type="date"
+          value={signupData.date}
+          onChange={(e) => setSignupData({ ...signupData, date: e.target.value })}
+        />
         <input
           style={styles.input}
           type="file"

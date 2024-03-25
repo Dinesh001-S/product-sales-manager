@@ -7,7 +7,7 @@
 /* Style the signup form container */
 .signup {
     width: 350px;
-    margin: 40px auto;
+    margin: 10px auto;
     border: 1px solid #ddd;
     border-radius: 10px; /* Increased roundness for softer look */
     padding: 20px;

@@ -6,6 +6,7 @@ import Inventory from './components/pages/Inventory'; // Correct typo in compone
 import Analytics from './components/pages/analytics';
 import Login from './components/pages/login';
 import Signup from './components/pages/signup';
+import Employees from './components/pages/employees';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
+          <Route path='/employees' element={<Employees/>}/>
           <Route path='/bill' element={<Bill/>}/>
           <Route path='/inventory' element={<Inventory/>}/> {/* Corrected path to 'inventory' */}
           <Route path='/analytics' element={<Analytics/>}/>
