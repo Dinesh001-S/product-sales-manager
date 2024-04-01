@@ -81,30 +81,34 @@ body {
     flex-direction: row;
     gap: 25px;
     position: relative;
-    left: 15%;
+    left: 10%;
+    margin-top: 15px;
   }
 
   .inventry-form label{
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 5px;
   }
 
   .inventry-form label h4{
     font-weight: bolder;
     min-width: max-content;
+    font-size: 18pt;
+    color: darkorchid;
   }
 
   .inventry-form label input, .inventry-form label select{
-    height: max-content;
+    height: 32.36px;
     margin: auto;
     border-radius: 10px;
     border: 1px solid black;
     box-shadow: 2px 2px grey;
+    width: 180px;
   }
 
   .inventry-form label select{
     font-size: 12pt;
-    padding: 10px;
   }
 
   .inventry-form button{

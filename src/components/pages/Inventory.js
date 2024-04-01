@@ -6,7 +6,7 @@ const ProductList = () => {
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
   const [type, setType] = useState('');
-  const [units, setUnits] = useState(0); // New state for units
+  const [units, setUnits] = useState(''); // New state for units
   const [products, setProducts] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
@@ -82,6 +82,8 @@ const ProductList = () => {
 
   return (
     <div>
+    <br/>
+    <br/>
       <h2>Add Product</h2>
       <form className='inventry-form'>
         <label>
@@ -117,27 +119,28 @@ const ProductList = () => {
       <table className='inventry-table'>
         <thead>
           <tr>
-            <th onClick={() => requestSort('productName')} className={getClassNamesFor('productName')}>Product Name</th>
-            <th onClick={() => requestSort('price')} className={getClassNamesFor('price')}>Price</th>
-            <th onClick={() => requestSort('type')} className={getClassNamesFor('type')}>Type</th>
-            <th onClick={() => requestSort('date')} className={getClassNamesFor('date')}>Date</th>
-            <th>Units</th> {/* Header for Units */}
-            <th>Edit</th> {/* Header for Edit */}
+          <th onClick={() => requestSort('productName')} className={getClassNamesFor('productName')}>Product Name</th>
+          <th onClick={() => requestSort('price')} className={getClassNamesFor('price')}>Price</th>
+          <th onClick={() => requestSort('type')} className={getClassNamesFor('type')}>Type</th>
+          <th onClick={() => requestSort('date')} className={getClassNamesFor('date')}>Date</th>
+          <th onClick={() => requestSort('units')} className={getClassNamesFor('units')}>Units</th> {/* Header for Units */}
+          <th>Edit</th> {/* Header for Edit */}
+        </tr>
+      </thead>
+      <tbody>
+        {sortedProducts.map((product, index) => (
+          <tr key={index}>
+            <td>{product.productName}</td>
+            <td>{product.price}</td>
+            <td>{product.type}</td>
+            <td>{formatDate(product.date)}</td>
+            <td>{product.units}</td> {/* Display Units */}
+            <td><button>Edit</button></td> {/* Edit Button */}
           </tr>
-        </thead>
-        <tbody>
-          {sortedProducts.map((product, index) => (
-            <tr key={index}>
-              <td>{product.productName}</td>
-              <td>{product.price}</td>
-              <td>{product.type}</td>
-              <td>{formatDate(product.date)}</td>
-              <td>{product.units}</td> {/* Display Units */}
-              <td><button>Edit</button></td> {/* Edit Button */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+       ))}
+      </tbody>
+    </table>
+
     </div>
   );
 };

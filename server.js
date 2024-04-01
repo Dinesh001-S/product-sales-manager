@@ -60,12 +60,33 @@ const productSchema = new mongoose.Schema({
   productName: String,
   price: Number,
   type: String,
-  units: Number,
-  date: Date,
+  units: Number, // Add units field
+  date: { type: Date, default: Date.now }
+});
+
+const Product = mongoose.model('Product', productSchema);
+// POST endpoint to add a new product
+app.post('/products', async (req, res) => {
+  try {
+    // Destructure fields from request body
+    const { productName, price, type, units } = req.body;
+
+    // Create a new product instance
+    const newProduct = new Product({ productName, price, type, units });
+
+    // Save the product to the database
+    await newProduct.save();
+
+    // Send success response
+    res.json({ message: 'Product added successfully' });
+  } catch (error) {
+    // Handle errors
+    console.error('Error adding product:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Create a model for the Product collection
-const Product = mongoose.model('Product', productSchema);
 
 
 // Endpoint to fetch existing products
@@ -80,18 +101,7 @@ app.get('/products', async (req, res) => {
 });
 
 // Endpoint to add a new product
-app.post('/products', async (req, res) => {
-  try {
-    const { productName, price,type } = req.body;
-    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date and time
-    const newProduct = new Product({ productName, price, type,units, date: new Date(currentDate)}); 
-    await newProduct.save();
-    res.json({ message: 'Product added successfully' });
-  } catch (error) {
-    console.error('Error adding product:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
