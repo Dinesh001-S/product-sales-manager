@@ -59,7 +59,9 @@ app.post('/bill', async (req, res) => {
 const productSchema = new mongoose.Schema({
   productName: String,
   price: Number,
-  type: String
+  type: String,
+  units: Number,
+  date: Date,
 });
 
 // Create a model for the Product collection
@@ -81,7 +83,8 @@ app.get('/products', async (req, res) => {
 app.post('/products', async (req, res) => {
   try {
     const { productName, price,type } = req.body;
-    const newProduct = new Product({ productName, price, type });
+    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date and time
+    const newProduct = new Product({ productName, price, type,units, date: new Date(currentDate)}); 
     await newProduct.save();
     res.json({ message: 'Product added successfully' });
   } catch (error) {
