@@ -6,17 +6,9 @@ const ProductList = () => {
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
   const [type, setType] = useState('');
-  const [units, setUnits] = useState(''); // New state for units
+  const [units, setUnits] = useState('');
   const [products, setProducts] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
-  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,6 +22,14 @@ const ProductList = () => {
 
     fetchProducts();
   }, []);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
+  };
 
   const addProduct = async () => {
     if (!productName || !price || !type || !units) {
@@ -51,9 +51,25 @@ const ProductList = () => {
       setProductName('');
       setPrice('');
       setType('');
-      setUnits(0);
+      setUnits('');
     } catch (error) {
       console.error('Error adding product:', error);
+    }
+  };
+
+  const editProduct = async (productId, updatedProduct) => {
+    try {
+      await axios.put(`http://localhost:3002/products/${productId}`, updatedProduct);
+
+      const updatedProducts = products.map(product => {
+        if (product._id === productId) {
+          return { ...product, ...updatedProduct };
+        }
+        return product;
+      });
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error('Error editing product:', error);
     }
   };
 
@@ -80,10 +96,15 @@ const ProductList = () => {
     }
   });
 
+  const handleEdit = (productId, fieldName, value) => {
+    const updatedProduct = { [fieldName]: value };
+    editProduct(productId, updatedProduct);
+  };
+
   return (
     <div>
-    <br/>
-    <br/>
+      <br />
+      <br />
       <h2>Add Product</h2>
       <form className='inventry-form'>
         <label>
@@ -119,28 +140,31 @@ const ProductList = () => {
       <table className='inventry-table'>
         <thead>
           <tr>
-          <th onClick={() => requestSort('productName')} className={getClassNamesFor('productName')}>Product Name</th>
-          <th onClick={() => requestSort('price')} className={getClassNamesFor('price')}>Price</th>
-          <th onClick={() => requestSort('type')} className={getClassNamesFor('type')}>Type</th>
-          <th onClick={() => requestSort('date')} className={getClassNamesFor('date')}>Date</th>
-          <th onClick={() => requestSort('units')} className={getClassNamesFor('units')}>Units</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sortedProducts.map((product, index) => (
-          <tr key={index}>
-            <td>{product.productName}</td>
-            <td>{product.price}</td>
-            <td>{product.type}</td>
-            <td>{formatDate(product.date)}</td>
-            <td>{product.units}</td>
-            <td><button>Edit</button></td>
+            <th onClick={() => requestSort('productName')} className={getClassNamesFor('productName')}>Product Name</th>
+            <th onClick={() => requestSort('price')} className={getClassNamesFor('price')}>Price</th>
+            <th onClick={() => requestSort('type')} className={getClassNamesFor('type')}>Type</th>
+            <th onClick={() => requestSort('date')} className={getClassNamesFor('date')}>Date</th>
+            <th onClick={() => requestSort('units')} className={getClassNamesFor('units')}>Units</th>
+            <th>Edit</th>
           </tr>
-       ))}
-      </tbody>
-    </table>
-
+        </thead>
+        <tbody>
+          {sortedProducts.map(product => (
+            <tr key={product._id}>
+              <td>{product.productName}</td>
+              <td>{product.price}</td>
+              <td>{product.type}</td>
+              <td>{formatDate(product.date)}</td>
+              <td>
+                <input type="number" value={product.units} onChange={(e) => handleEdit(product._id, 'units', e.target.value)} />
+              </td>
+              <td>
+                <button onClick={() => handleEdit(product._id, 'productName', product.productName)}>Edit</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
