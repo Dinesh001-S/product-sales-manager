@@ -99,6 +99,31 @@ app.get('/products', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+// Endpoint to update an existing product
+app.put('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { productName, price, type, units, date } = req.body;
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, {
+      productName,
+      price,
+      type,
+      units,
+      date
+    }, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json({ message: 'Product updated successfully', updatedProduct });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 // Endpoint to add a new product
 
