@@ -123,8 +123,8 @@ const ProductList = () => {
           <th onClick={() => requestSort('price')} className={getClassNamesFor('price')}>Price</th>
           <th onClick={() => requestSort('type')} className={getClassNamesFor('type')}>Type</th>
           <th onClick={() => requestSort('date')} className={getClassNamesFor('date')}>Date</th>
-          <th onClick={() => requestSort('units')} className={getClassNamesFor('units')}>Units</th> {/* Header for Units */}
-          <th>Edit</th> {/* Header for Edit */}
+          <th onClick={() => requestSort('units')} className={getClassNamesFor('units')}>Units</th>
+          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -134,8 +134,8 @@ const ProductList = () => {
             <td>{product.price}</td>
             <td>{product.type}</td>
             <td>{formatDate(product.date)}</td>
-            <td>{product.units}</td> {/* Display Units */}
-            <td><button>Edit</button></td> {/* Edit Button */}
+            <td>{product.units}</td>
+            <td><button>Edit</button></td>
           </tr>
        ))}
       </tbody>
