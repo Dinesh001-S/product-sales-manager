@@ -8,11 +8,21 @@ const Bill = () => {
  const [quantity, setQuantity] = useState('');
  const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Current date
  const [purchaseList, setPurchaseList] = useState([]);
+ const [productSuggestions, setProductSuggestions] = useState([]); // State to store product name suggestions
 
  useEffect(() => {
-  // Fetch and update purchaseList from the server if needed
-  // For example, if you have an API endpoint to get previous purchases.
- }, []); // Run this effect only once on component mount
+  // Fetch product name suggestions when the component mounts
+  fetchProductSuggestions();
+ }, []);
+
+ const fetchProductSuggestions = async () => {
+  try {
+   const response = await axios.get('http://localhost:3002/products/suggestions');
+   setProductSuggestions(response.data.productNames);
+  } catch (error) {
+   console.error('Error fetching product suggestions:', error);
+  }
+ };
 
  const calculateTotal = () => {
   return purchaseList.reduce((total, purchase) => total + parseFloat(purchase.price) * parseFloat(purchase.quantity), 0).toFixed(2);
@@ -31,56 +41,7 @@ const Bill = () => {
    setPurchaseList([]);
   } catch (error) {
    console.error('Error storing data:', error);
-   // Handle error, show alert, etc.
   }
-  printInvoice();
- };
-
- const printInvoice = () => {
-  const invoiceContent = `
-   <html>
-    <head>
-     <title>Invoice</title>
-     <style>
-      /* Your custom styles for the invoice */
-     </style>
-    </head>
-    <body>
-     <h1>Invoice</h1>
-     <table>
-      <thead>
-       <tr>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Date</th>
-       </tr>
-      </thead>
-      <tbody>
-       ${purchaseList.map((purchase, index) => `
-        <tr key=${index}>
-         <td>${purchase.productName}</td>
-         <td>${purchase.price}</td>
-         <td>${purchase.quantity}</td>
-         <td>${purchase.date}</td>
-        </tr>
-       `).join('')}
-      </tbody>
-      <tfoot>
-       <tr>
-        <td colspan="4">Total: ₹${calculateTotal()}</td>
-       </tr>
-      </tfoot>
-     </table>
-    </body>
-   </html>
-  `;
-
-  const newWindow = window.open('', '_blank');
-  newWindow.document.open();
-  newWindow.document.write(invoiceContent);
-  newWindow.document.close();
-  newWindow.print();
  };
 
  const handleSubmit = (e) => {
@@ -117,7 +78,18 @@ const Bill = () => {
      <label>
       Product Name:
      </label>
-     <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)} />
+     <input 
+      type="text" 
+      value={productName} 
+      onChange={(e) => setProductName(e.target.value)}
+      list="productSuggestions" // Define a datalist for product suggestions
+     />
+     <datalist id="productSuggestions">
+      {/* Map over productSuggestions to show suggestions */}
+      {productSuggestions.map((productName, index) => (
+       <option key={index} value={productName} />
+      ))}
+     </datalist>
      <br />
      <label>
       Price:
@@ -165,7 +137,6 @@ const Bill = () => {
       <tr>
        <td colSpan="4" style={{ textAlign: 'center' }}>
         <button className="bill" onClick={handleBillClick}>Bill</button>
-        {/* <button className="print" onClick={printInvoice}>Print Invoice</button> */}
        </td>
       </tr>
      </tfoot>
