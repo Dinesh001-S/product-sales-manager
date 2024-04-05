@@ -8,6 +8,14 @@ const Employees = () => {
     fetchData();
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
+  };
+
   const fetchData = async () => {
     try {
       const response = await axios.get('http://localhost:3002/users');
@@ -38,8 +46,8 @@ const Employees = () => {
             <th>Gender</th>
             <th>Age</th>
             <th>Shift</th>
-            <th>Joining Date</th> {/* New column for joining date */}
-            <th>Action</th> {/* New column for delete button */}
+            <th>Joining Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +58,7 @@ const Employees = () => {
               <td>{employee.gender}</td>
               <td>{employee.age}</td>
               <td>{employee.shift}</td>
-              <td>{new Date(employee.date).toLocaleDateString()}</td> {/* Display joining date */}
+              <td>{formatDate(employee.date)}</td>
               <td>
                 <button onClick={() => handleDelete(employee._id)}>Delete</button>
               </td>
