@@ -123,6 +123,17 @@ app.put('/products/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+// Endpoint to fetch distinct product names for suggestions
+app.get('/products/suggestions', async (req, res) => {
+  try {
+    // Use distinct() method to get unique product names
+    const productNames = await Product.distinct('productName');
+    res.json({ productNames });
+  } catch (error) {
+    console.error('Error fetching product suggestions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 // Endpoint to add a new product
