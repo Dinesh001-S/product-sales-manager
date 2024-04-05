@@ -9,6 +9,8 @@ const ProductList = () => {
   const [units, setUnits] = useState('');
   const [products, setProducts] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [editedUnitId, setEditedUnitId] = useState(null); // State to track which unit is being edited
+  const [editedValues, setEditedValues] = useState({}); // State to track edited values for each product
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -68,6 +70,11 @@ const ProductList = () => {
         return product;
       });
       setProducts(updatedProducts);
+      setEditedValues(prevState => ({
+        ...prevState,
+        [productId]: null
+      }));
+      setEditedUnitId(null);
     } catch (error) {
       console.error('Error editing product:', error);
     }
@@ -96,9 +103,30 @@ const ProductList = () => {
     }
   });
 
-  const handleEdit = (productId, fieldName, value) => {
-    const updatedProduct = { [fieldName]: value };
-    editProduct(productId, updatedProduct);
+  const handleEdit = async (productId, fieldName, value) => {
+    // Calculate new unit value by adding the old value and the edited value
+    const oldUnits = parseInt(products.find(product => product._id === productId).units);
+    const newUnits = parseInt(value) + oldUnits;
+    const updatedProduct = { [fieldName]: newUnits };
+    await editProduct(productId, updatedProduct);
+  };
+
+  const handleEditButtonClicked = (productId) => {
+    setEditedUnitId(productId);
+  };
+
+  const handleEnterKeyPress = (e, productId) => {
+    if (e.key === 'Enter') {
+      handleEdit(productId, 'units', editedValues[productId]);
+    }
+  };
+
+  const handleInputChange = (e, productId) => {
+    const { value } = e.target;
+    setEditedValues(prevState => ({
+      ...prevState,
+      [productId]: value
+    }));
   };
 
   return (
@@ -130,7 +158,11 @@ const ProductList = () => {
         <br />
         <label>
           <h4>Units</h4>
-          <input type="number" value={units} onChange={(e) => setUnits(e.target.value)} />
+          <input
+            type="number"
+            value={units}
+            onChange={(e) => setUnits(e.target.value)}
+          />
         </label>
         <br />
         <button type="button" onClick={addProduct}>Add Product</button>
@@ -145,7 +177,7 @@ const ProductList = () => {
             <th onClick={() => requestSort('type')} className={getClassNamesFor('type')}>Type</th>
             <th onClick={() => requestSort('date')} className={getClassNamesFor('date')}>Date</th>
             <th onClick={() => requestSort('units')} className={getClassNamesFor('units')}>Units</th>
-            <th>Edit</th>
+            <th>New Stocks</th>
           </tr>
         </thead>
         <tbody>
@@ -156,10 +188,20 @@ const ProductList = () => {
               <td>{product.type}</td>
               <td>{formatDate(product.date)}</td>
               <td>
-                <input type="number" value={product.units} onChange={(e) => handleEdit(product._id, 'units', e.target.value)} />
+                {editedUnitId === product._id ?
+                  <input
+                    type="number"
+                    value={editedValues[product._id] !== null ? editedValues[product._id] : product.units}
+                    onChange={(e) => handleInputChange(e, product._id)}
+                    onBlur={() => handleEdit(product._id, 'units', editedValues[product._id])}
+                    onKeyPress={(e) => handleEnterKeyPress(e, product._id)}
+                  />
+                  :
+                  product.units
+                }
               </td>
               <td>
-                <button onClick={() => handleEdit(product._id, 'productName', product.productName)}>Edit</button>
+                <button onClick={() => handleEditButtonClicked(product._id)}>Update</button>
               </td>
             </tr>
           ))}
