@@ -135,7 +135,25 @@ app.get('/products/suggestions', async (req, res) => {
   }
 });
 
-
+// Endpoint to fetch the price of a product by name
+app.get('/products/price', async (req, res) => {
+  try {
+    const { productName } = req.query;
+    // Find the product by name in the database
+    const product = await Product.findOne({ productName });
+    if (product) {
+      // If the product is found, send its price in the response
+      res.json({ price: product.price });
+    } else {
+      // If the product is not found, send a 404 error response
+      res.status(404).json({ error: 'Product not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching product price:', error);
+    // Send a 500 error response in case of any server error
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 // Endpoint to add a new product
 
 const userSchema = new mongoose.Schema({
