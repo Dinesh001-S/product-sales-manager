@@ -53,7 +53,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3002/login', loginData);
+      const response = await axios.post('https://product-and-sales-manager-server.onrender.com/login', loginData);
       setLoggedInUser(response.data);
       localStorage.setItem('loggedInUser', JSON.stringify(response.data));
     } catch (error) {
