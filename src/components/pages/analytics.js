@@ -12,7 +12,7 @@ const Analytics = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3002/products');
+        const response = await axios.get('https://product-and-sales-manager-server.onrender.com/products');
         setData(response.data.products);
       } catch (error) {
         console.error('Error fetching data:', error);
