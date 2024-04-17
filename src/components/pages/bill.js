@@ -16,7 +16,7 @@ const Bill = () => {
 
   const fetchProductSuggestions = async () => {
     try {
-      const response = await axios.get('http://localhost:3002/products/suggestions');
+      const response = await axios.get('https://product-and-sales-manager-server.onrender.com/suggestions');
       setProductSuggestions(response.data.productNames);
     } catch (error) {
       console.error('Error fetching product suggestions:', error);
@@ -25,7 +25,7 @@ const Bill = () => {
 
   const fetchProductPrice = async (productName) => {
     try {
-      const response = await axios.get(`http://localhost:3002/products/price?productName=${productName}`);
+      const response = await axios.get(`https://product-and-sales-manager-server.onrender.com/products/price?productName=${productName}`);
       setPrice(response.data.price);
     } catch (error) {
       console.error('Error fetching product price:', error);
@@ -39,7 +39,7 @@ const Bill = () => {
   const handleBillClick = async () => {
     try {
       const total = calculateTotal();
-      await axios.post('http://localhost:3002/bill', {
+      await axios.post('https://product-and-sales-manager-server.onrender.com/bill', {
         purchases: purchaseList,
         total,
       });
