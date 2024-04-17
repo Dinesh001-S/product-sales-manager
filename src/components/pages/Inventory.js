@@ -15,7 +15,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3002/products');
+        const response = await axios.get('https://product-and-sales-manager-server.onrender.com/products');
         setProducts(response.data.products);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -47,7 +47,7 @@ const ProductList = () => {
         units
       });
 
-      const response = await axios.get('http://localhost:3002/products');
+      const response = await axios.get('https://product-and-sales-manager-server.onrender.com/products');
       setProducts(response.data.products);
 
       setProductName('');
