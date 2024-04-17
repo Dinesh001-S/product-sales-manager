@@ -40,7 +40,7 @@ const ProductList = () => {
     }
 
     try {
-      await axios.post('http://localhost:3002/products', {
+      await axios.post('https://product-and-sales-manager-server.onrender.com/products', {
         productName,
         price,
         type,
@@ -61,7 +61,7 @@ const ProductList = () => {
 
   const editProduct = async (productId, updatedProduct) => {
     try {
-      await axios.put(`http://localhost:3002/products/${productId}`, updatedProduct);
+      await axios.put(`https://product-and-sales-manager-server.onrender.com/products/${productId}`, updatedProduct);
 
       const updatedProducts = products.map(product => {
         if (product._id === productId) {
