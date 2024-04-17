@@ -18,7 +18,7 @@ const Employees = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:3002/users');
+      const response = await axios.get('https://product-and-sales-manager-server.onrender.com/users');
       setEmployees(response.data.users);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -27,7 +27,7 @@ const Employees = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3002/users/${id}`);
+      await axios.delete(`https://product-and-sales-manager-server.onrender.com/users/${id}`);
       setEmployees(prevEmployees => prevEmployees.filter(employee => employee._id !== id));
     } catch (error) {
       console.error('Error deleting employee:', error);
