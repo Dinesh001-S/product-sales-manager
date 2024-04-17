@@ -54,7 +54,7 @@ const Signup = () => {
       formData.append('date', signupData.date); // Append date
 
       // Send the formData to your backend server
-      await axios.post('http://localhost:3002/signup', formData, {
+      await axios.post('https://product-and-sales-manager-server.onrender.com/signup', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
