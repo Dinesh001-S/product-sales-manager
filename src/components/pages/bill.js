@@ -16,7 +16,7 @@ const Bill = () => {
 
   const fetchProductSuggestions = async () => {
     try {
-      const response = await axios.get('https://product-and-sales-manager-server.onrender.com/suggestions');
+      const response = await axios.get('https://product-and-sales-manager-server.onrender.com/products/suggestions');
       setProductSuggestions(response.data.productNames);
     } catch (error) {
       console.error('Error fetching product suggestions:', error);
