@@ -52,12 +52,20 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
+
+    if(!loginData.username || !loginData.password){
+      alert("Enter Your Username and Password");
+      return;
+    }
     try {
-      const response = await axios.post('https://product-and-sales-manager-server.onrender.com/login', loginData);
+      const response = await axios.post('http://product-and-sales-manager-server.onrender.com/login', loginData);
       setLoggedInUser(response.data);
       localStorage.setItem('loggedInUser', JSON.stringify(response.data));
     } catch (error) {
-      console.error('Login failed:', error);
+      if(error.response && error.response.status === 401){
+        alert("Unauthorized or wrong username and password.");
+      }
+      else console.error('Login failed:', error);
     }
   };
 
