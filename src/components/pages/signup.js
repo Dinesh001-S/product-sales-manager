@@ -63,6 +63,7 @@ const Signup = () => {
       // Once the data is successfully inserted into the database, you can navigate to another page
       navigate('/');
     } catch (error) {
+      alert("SignUp Failed!... Try Again!");
       console.error('Signup failed:', error);
     }
   };
@@ -120,6 +121,7 @@ const Signup = () => {
           <option value="">Select Shift</option>
           <option value="day">Day</option>
           <option value="night">Night</option>
+          <option value="Full-duty">Full-duty</option>
         </select>
         <input
           style={styles.input}
