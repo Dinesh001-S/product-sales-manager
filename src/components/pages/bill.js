@@ -74,6 +74,12 @@ const Bill = () => {
 
   return (
     <div className='container'>
+      <div className='today'>
+        <label>
+              Date:
+        </label>
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+      </div>
       <div className='box'>
         <form onSubmit={handleSubmit}>
           <label>
@@ -101,10 +107,7 @@ const Bill = () => {
           </label>
           <input type="text" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
           <br />
-          <label>
-            Date:
-          </label>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          
           <br />
           <button type="submit">Add Product</button>
         </form>
