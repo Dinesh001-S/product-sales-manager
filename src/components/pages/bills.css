@@ -7,18 +7,49 @@
     margin: 0;
     padding: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     /* align-items: center; */
     height: 85vh;
     width: 100vw;
   }
+  .container .lable input {
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  .today {
+    border: 1px solid black;
+    text-align: center;
+    margin-bottom: 20px;
+    width: fit-content;
+    color: black;
+    left: 15px;
+    position: relative;
+    padding: 5px;
+    border-radius: 5px;
+    top: 15px;
+    box-shadow: 2px 2px grey;
+  }
+  
+  .today label {
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  
+  .today input[type="date"] {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
   
   .box {
-    margin-top: 40px;
+    margin:auto;
+    /* margin-top: 40px; */
     /* background-color: #333; */
     width: 70vw;
     min-width: max-content;
-    height: 65vh;
+    /* height: 65vh; */
     background-color: grey;
     padding: 20px;
     border-radius: 8px;
