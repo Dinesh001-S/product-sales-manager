@@ -23,6 +23,7 @@ const Purchase = mongoose.model('Purchase', purchaseSchema);
 const billSchema = new mongoose.Schema({
   purchases: [purchaseSchema],
   total: Number,
+  date: Date,
 });
 
 const Bill = mongoose.model('Bill', billSchema);
@@ -41,11 +42,12 @@ mongoose.connect('mongodb+srv://dinesh:pJPP7wn3X5SVMjCX@bill-data.2rwmc5n.mongod
 
 app.post('/bill', async (req, res) => {
   try {
-    const { purchases, total } = req.body;
+    const { purchases, total, date } = req.body;
     
     const newBill = new Bill({
       purchases,
       total,
+      date,
     });
     
     await newBill.save();
